@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "djangoshopproject"
+version = "0.1.0"
+description = ""
+authors = ["Constantine Putilov <putilov.constantine@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

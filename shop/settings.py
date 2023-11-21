@@ -27,7 +27,7 @@ SECRET_KEY = secrets.SecretReader(str(BASE_DIR / "secrets")).get("app_key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*" if DEBUG else ""]
 
 
 # Application definition
@@ -123,7 +123,6 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [
     ("catalog", BASE_DIR / "catalog" / "static"),
-    BASE_DIR / "static",
 ]
 
 # Default primary key field type

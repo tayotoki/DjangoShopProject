@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block title_on_page %}{% endblock %}
+
+
+{% block content %}
+    {% for item in items %}
+       <p class="d-inline-flex gap-1 mt-4 col-12">
+          <button class="btn btn-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.id }}" aria-expanded="false" aria-controls="collapseExample">
+            {{ item.title }}
+          </button>
+       </p>
+        <div class="py-1 collapse" id="{{ item.id }}">
+          <div class="card card-body col-12">
+            {{ item.answer }}
+          </div>
+        </div>
+    {% endfor %}
+
+    <p class="mt-4 text-center">
+        Отправьте ваши пожелания через форму обратной связи
+    </p>
+
+    {% if not feedback_complete %}
+    <form class="mt-4 shadow p-4" name="feedback_form" method="post" action="{% url 'catalog:contacts' %}" novalidate>
+
+    {% if not form_valid %}
+      <div class="feedback text-bg-danger text-lg-center mb-4" style="color:red;">
+        Не все поля заполнены!
+      </div>
+    {% endif %}
+
+    {% csrf_token %}
+      <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Ваше имя</label>
+        <div class="col-sm-3">
+          <input type="email" name="user_name" class="form-control" value="{{ form.user_name }}" id="inputEmail3">
+          <div class="valid-feedback">
+            Все верно!
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="inputText3" class="col-sm-2 col-form-label">Пожелания</label>
+        <div class="col-sm-10">
+            <textarea class="form-control text-bg-light text" name="user_feedback" id="inputText3" style="height: 200px">{{ form.user_feedback }}</textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-5">Отправить</button>
+    </form>
+
+    {% else %}
+        <p class="py-sm-4 text-bg-success text-center" style="font-size: x-large;">Спасибо за обратную связь!</p>
+    {% endif %}
+
+{% endblock content %}

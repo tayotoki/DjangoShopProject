@@ -16,6 +16,7 @@
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href={% url 'catalog:index' %}>Каталог</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts' %}">Контакты</a>
+        <a class="p-2 btn btn-outline-primary" style="--bs-btn-bg: green; --bs-btn-color: white;" href="{% url 'catalog:create_product' %}">Добавить товар</a>
     </nav>
 </div>
 {% endblock %}
@@ -31,7 +32,7 @@
 {% block container_on_page %}
 <div class="container">
     {% block content %}
-
+        {#Put your content here#}
     {% endblock content %}
 
     {% block footer %}

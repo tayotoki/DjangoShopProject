@@ -1,22 +1,51 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block content %}
 <div class="row text-center">
-        {% for product in last_five_products %}
-        <div class="col-3">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">{{ product.price }}</h1>
-                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+    {% for product in products %}
+    <div class="col-3">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">{{ product.price }}</h1>
+                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                    {% if product.description|length > 100 %}
+                        <li>- {{ product.description|string_slice:":100" }}...</li>
+                    {% else %}
                         <li>- {{ product.description }}</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
-                </div>
+                    {% endif %}
+                </ul>
+                <a class="p-2 btn btn-outline-primary" href={% url 'catalog:product' product.pk %}>Купить</a>
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+
+    {% if products.has_other_pages %}
+        <div class="btn-group mt-4" role="group" aria-label="Item pagination">
+            {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
+            {% endif %}
+
+            {% for page_number in products.paginator.page_range %}
+                {% if products.number == page_number %}
+                    <button class="btn btn-outline-primary active">
+                        <span>{{ page_number }} <span class="sr-only">(текущий)</span></span>
+                    </button>
+                {% else %}
+                    <a href="?page={{ page_number }}" class="btn btn-outline-primary">
+                        {{ page_number }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}" class="btn btn-outline-primary">&raquo;</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
 {% endblock content %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 
 {% block title %}Контакты{% endblock %}
 
@@ -8,11 +9,11 @@
 {% block content %}
     {% for item in items %}
        <p class="d-inline-flex gap-1 mt-4 col-12">
-          <button class="btn btn-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.get_html_safe_id }}" aria-expanded="false" aria-controls="collapseExample">
+          <button class="btn btn-primary col-12" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item|get_html_id }}" aria-expanded="false" aria-controls="collapseExample">
             {{ item.title }}
           </button>
        </p>
-        <div class="py-1 collapse" id="{{ item.get_html_safe_id }}">
+        <div class="py-1 collapse" id="{{ item|get_html_id }}">
           <div class="card card-body col-12">
             {{ item.description }}
           </div>

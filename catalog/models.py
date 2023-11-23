@@ -50,10 +50,5 @@ class Contact(models.Model):
         verbose_name = "Контакт"
         verbose_name_plural = "Контакты"
 
-    def get_html_safe_id(self):
-        """Возвращает id атрибут для html тэга,
-        отвечающего за выпадающий список"""
-        return f"{self._meta.model_name.lower()}{self.pk}"
-
     def __str__(self):
         return self.title

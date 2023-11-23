@@ -1,17 +1,67 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpRequest, HttpResponse
+from django.core.paginator import (
+    Paginator,
+    EmptyPage,
+    PageNotAnInteger,
+)
 
-from .models import Product, Category, Contact
+from .models import Product, Contact
+from .forms import ProductForm
 
 
 # Create your views here.
 def index(request: HttpRequest) -> HttpResponse:
-    last_five_products = Product.objects.all()[:5]
+    products = Product.objects.all().order_by("-modified_at")
+
+    default_page = 1
+    page = request.GET.get("page", default_page)
+
+    items_per_page = 8
+    paginator = Paginator(products, items_per_page)
+
+    try:
+        items_page = paginator.page(page)
+    except PageNotAnInteger:
+        items_page = paginator.page(default_page)
+    except EmptyPage:
+        items_page = paginator.page(paginator.num_pages)
 
     ctx = {
-        "last_five_products": last_five_products,
+        "products": items_page
     }
+
     return render(request=request, template_name="home.html", context=ctx)
+
+
+def product(request: HttpRequest, pk: int) -> HttpResponse:
+
+    product = get_object_or_404(Product, pk=pk)
+
+    ctx = {
+        "product": product
+    }
+
+    return render(request, template_name="product.html", context=ctx)
+
+
+def create_product(request: HttpRequest):
+    form = ProductForm()
+
+    ctx = {
+        "form": form
+    }
+
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect("catalog:index")
+        else:
+            ctx["form"] = form
+
+    return render(request=request, template_name="create_product.html", context=ctx)
 
 
 def contacts(request: HttpRequest) -> HttpResponse:

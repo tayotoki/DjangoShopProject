@@ -12,20 +12,19 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-from utils import secrets
+from envparse import env
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ENV_PATH = BASE_DIR.joinpath(".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+if ENV_PATH.is_file():
+    env.read_envfile(ENV_PATH)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets.APP_KEY
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = env("SECRET_KEY")
+
+DEBUG = env.bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = ["*" if DEBUG else ""]
 
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
     'catalog.apps.CatalogConfig',
 ]
 
@@ -80,17 +80,14 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangoshop',
-        'USER': secrets.PG_USER,
-        'PASSWORD': secrets.PG_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'NAME': env("DB_NAME"),
+        'USER': env("PG_USER"),
+        'PASSWORD': env("PG_PASSWORD"),
+        'HOST': env("DB_HOST", default='localhost'),
+        'PORT': env.int("DB_PORT", default=5432),
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -10,8 +10,12 @@ python = "^3.11"
 django = "^4.2.7"
 psycopg2 = "^2.9.9"
 pillow = "^10.1.0"
-python-dotenv = "^1.0.0"
+ipython = "^8.18.0"
+envparse = "^0.2.0"
 
+
+[tool.poetry.group.dev.dependencies]
+django-extensions = "^3.2.3"
 
 [build-system]
 requires = ["poetry-core"]

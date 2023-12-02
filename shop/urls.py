@@ -28,7 +28,7 @@ admin.site.index_title = "Skystore"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("catalog.urls"), name="catalog"),
+    path("", include("catalog.urls", namespace="catalog")),
 ]
 
 if settings.DEBUG:

@@ -30,8 +30,17 @@
                         Добавить в корзину
                     </button>
                 </div>
+                <div class="d-flex mt-lg-5">
+                    <button class="btn btn-outline-secondary flex-shrink-0" type="button">
+                        <i class="bi-cart-fill me-1"></i>
+                            <a href="{% url 'catalog:edit_product' product.pk %}" style="text-decoration: none; color: inherit;">
+                                Изменить
+                            </a>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
 </section>
 {% endblock %}

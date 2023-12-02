@@ -1,10 +1,10 @@
-from django.forms import ModelForm
+from django import forms
 from django.forms.widgets import Textarea, TextInput
 
 from .models import Product
 
 
-class ProductForm(ModelForm):
+class ProductCreateForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = [
@@ -29,3 +29,8 @@ class ProductForm(ModelForm):
                 }
             )
         }
+
+
+class FeedbackForm(forms.Form):
+    name = forms.CharField(max_length=100, required=True)
+    description = forms.CharField(widget=forms.Textarea, required=True)

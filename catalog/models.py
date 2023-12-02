@@ -2,6 +2,8 @@ import decimal
 
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.urls import reverse
+
 
 # Create your models here.
 
@@ -32,7 +34,15 @@ class Product(BaseContent):
     created_at = models.DateTimeField(verbose_name="дата создания", auto_now_add=True)
     modified_at = models.DateTimeField(verbose_name="дата последнего изменения", auto_now=True)
 
-    category = models.ForeignKey(Category, verbose_name="категория", on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Category,
+                                 verbose_name="категория",
+                                 related_name="products",
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
+
+    def get_absolute_url(self):
+        return reverse("catalog:product", kwargs={"pk": self.pk})
 
     class Meta:
         verbose_name = "Товар"

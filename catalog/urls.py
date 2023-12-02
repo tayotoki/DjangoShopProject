@@ -1,8 +1,10 @@
 from django.urls import path
 
 from .views import index, contacts, product, create_product
+from .apps import CatalogConfig
 
-app_name = "catalog"
+app_name = CatalogConfig.name
+
 
 urlpatterns = [
     path("", index, name="index"),

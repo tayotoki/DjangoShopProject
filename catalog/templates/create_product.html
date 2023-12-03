@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% block content %}
-    <form enctype="multipart/form-data" method="post" action="{% url 'catalog:create_product' %}" class="mt-4 shadow p-4 col-6 mx-auto">
+    <form enctype="multipart/form-data" method="post"
+          {% block form_action %}
+          action="{% url 'catalog:create_product' %}"
+          {% endblock %}
+          class="mt-4 shadow p-4 col-6 mx-auto">
     {% csrf_token %}
         <div class="row mb-3">
             <label for="inputEmail3" class="p-0 col-sm-3 col-form-label">Название товара</label>
@@ -40,6 +44,6 @@
             {{ form.preview }}
         </div>
       </div>
-      <button type="submit" class="btn btn-primary mt-5">Добавить</button>
+      <button type="submit" class="btn btn-primary mt-5">{% block action_title %}Добавить{% endblock %}</button>
     </form>
 {% endblock %}

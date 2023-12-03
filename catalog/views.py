@@ -1,91 +1,50 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpRequest, HttpResponse
-from django.core.paginator import (
-    Paginator,
-    EmptyPage,
-    PageNotAnInteger,
-)
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.utils.translation import gettext as _
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .models import Product, Contact
-from .forms import ProductForm
+from .forms import ProductCreateForm, FeedbackForm
+from .generic import FormListView
 
 
-# Create your views here.
-def index(request: HttpRequest) -> HttpResponse:
-    products = Product.objects.all().order_by("-modified_at")
+class MainPage(ListView):
+    model = Product
+    template_name = "home.html"
+    context_object_name = "products"
+    paginate_by = 8
 
-    default_page = 1
-    page = request.GET.get("page", default_page)
-
-    items_per_page = 8
-    paginator = Paginator(products, items_per_page)
-
-    try:
-        items_page = paginator.page(page)
-    except PageNotAnInteger:
-        items_page = paginator.page(default_page)
-    except EmptyPage:
-        items_page = paginator.page(paginator.num_pages)
-
-    ctx = {
-        "products": items_page
-    }
-
-    return render(request=request, template_name="home.html", context=ctx)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by("-modified_at")
 
 
-def product(request: HttpRequest, pk: int) -> HttpResponse:
+class ShowProduct(DetailView):
+    model = Product
+    template_name = "product.html"
+    context_object_name = "product"
 
-    product = get_object_or_404(Product, pk=pk)
-
-    ctx = {
-        "product": product
-    }
-
-    return render(request, template_name="product.html", context=ctx)
+    def get_object(self, queryset=None):
+        return get_object_or_404(self.model, pk=self.kwargs[self.pk_url_kwarg])
 
 
-def create_product(request: HttpRequest):
-    form = ProductForm()
-
-    ctx = {
-        "form": form
-    }
-
-    if request.method == "POST":
-        form = ProductForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return redirect("catalog:index")
-        else:
-            ctx["form"] = form
-
-    return render(request=request, template_name="create_product.html", context=ctx)
+class CreateProduct(CreateView):
+    form_class = ProductCreateForm
+    template_name = "create_product.html"
 
 
-def contacts(request: HttpRequest) -> HttpResponse:
-    contacts = Contact.objects.all()
+class UpdateProduct(UpdateView):
+    model = Product
+    form_class = ProductCreateForm
+    template_name = "edit_product.html"
 
-    ctx = {
-        "form_valid": True,
-        "feedback_complete": False,
-        "form": {
-          "user_name": "",
-          "user_feedback": "",
-        },
-        "items": contacts,
-    }
 
-    if request.method == "POST":
-        if not all(
-            (user_name := request.POST.get("user_name"),
-             user_feedback := request.POST.get("user_feedback"))
-        ):
-            ctx["form_valid"] = False
-            ctx["form"]["user_name"] = user_name
-            ctx["form"]["user_feedback"] = user_feedback
-        else:
-            ctx["feedback_complete"] = True
+class Contacts(FormListView):
+    model = Contact
+    template_name = "contacts.html"
+    form_class = FeedbackForm
+    success_url = "."
 
-    return render(request, "contacts.html", context=ctx)
+    def form_valid(self, form):
+        messages.success(self.request, _("Thanks for your feedback"))
+        return super().form_valid(form)

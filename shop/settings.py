@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'catalog.apps.CatalogConfig',
+    'blog.apps.BlogConfig',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,7 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [
     ("catalog", BASE_DIR / "catalog" / "static"),
+    ("blog", BASE_DIR / "blog" / "static"),
 ]
 
 MEDIA_URL = "/media/"

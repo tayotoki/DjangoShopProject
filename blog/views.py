@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from uuid import UUID
 
 from .models import Post
-from .mixins import PublishedPostsMixin
+from .mixins import PublishedPostsMixin, update_post_views
 from .forms import CreateUpdatePostForm
 
 
@@ -25,11 +25,9 @@ class PostDetail(DetailView):
     model = Post
     template_name = "blog/single-post.html"
 
+    @update_post_views
     def get(self, request, *args, **kwargs):
-        response = super().get(request, *args, **kwargs)
-        self.model.posts.update_views(pk=self.object.pk)
-
-        return response
+        return super().get(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         uuid = self.kwargs.get("uuid")
@@ -50,4 +48,4 @@ class PostCreateView(PostCreateUpdateBase, CreateView):
 
 
 class PostUpdateView(PostCreateUpdateBase, UpdateView):
-    template_name = "blog/create-post.html"
+    template_name = "blog/update-post.html"

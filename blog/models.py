@@ -3,14 +3,14 @@ import uuid
 from django.db import models
 from django.urls import reverse
 
-from .managers import PostsQuerySet
+from .managers import PostsManager
 
 
 class Post(models.Model):
     # Fields.
     uuid_field = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, null=False)
     title = models.CharField(max_length=100, verbose_name="Заголовок")
-    slug = models.CharField(max_length=100, unique=True, null=False)
+    slug = models.CharField(max_length=100, null=False)
     content = models.TextField(verbose_name="Содержимое")
     preview = models.ImageField(upload_to="previews", verbose_name="Превью")
     created_at = models.DateField(auto_now=True, verbose_name="Дата создания")
@@ -18,7 +18,7 @@ class Post(models.Model):
     views_count = models.PositiveIntegerField(verbose_name="Количество просмотров", default=0)
 
     # Managers.
-    posts = PostsQuerySet.as_manager()
+    posts = PostsManager()
 
     class Meta:
         verbose_name = "Пост"
@@ -28,4 +28,4 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("blog:post-detail", kwargs={"slug": f"{self.slug}-{self.uuid_field}"})
+        return reverse("blog:post-detail", kwargs={"slug": self.slug, "uuid": self.uuid_field})

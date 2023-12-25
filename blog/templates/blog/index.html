@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load tags %}
+{% load static %}
 
 {% block content %}
     <main id="main">
@@ -53,13 +54,13 @@
 
                                 <div class="post-meta"><span class="date">Название категории</span> <span class="mx-1">&bullet;</span>
                                     <span>{{ post.created_at }}</span></div>
-                                <h2><a href="single-post.html">{{ post.title }}</a></h2>
+                                <h2><a href="{% url 'blog:post-detail' slug=post.slug uuid=post.uuid_field %}">{{ post.title }}</a></h2>
                                 <div class="col-2">
-                                    <a href="single-post.html"><img src="{% mediapath post.preview %}" height="200" width="200"
+                                    <a href="{% url 'blog:post-detail' slug=post.slug uuid=post.uuid_field %}"><img src="{% mediapath post.preview %}" height="200" width="200"
                                                                     alt="" class="img-fluid"></a>
                                 </div>
                                 <p class="mb-4 d-block">{{ post.content|slice:":150" }}</p>
-
+                                <p class="blockquote" style="font-size: smaller;"><img src="{% static 'assets/svg/eye.svg' %}" alt="">  {{ post.views_count }}</p>
                                 <div class="d-flex align-items-center author">
                                     <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid">
                                     </div>
@@ -124,41 +125,43 @@
                 <div class="trending mb-4">
                     <h3>Тренды</h3>
                     <ul class="trending-post">
+                        {% for post in best_five_posts %}
                         <li>
                             <a href="single-post.html">
-                                <span class="number">1</span>
-                                <h3>The Best Homemade Masks for Face (keep the Pimples Away)</h3>
-                                <span class="author">Jane Cooper</span>
+                                <span class="number">{{ forloop.counter }}</span>
+                                <h3>{{ post.title }}</h3>
+                                <span class="author">Автор поста</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="single-post.html">
-                                <span class="number">2</span>
-                                <h3>17 Pictures of Medium Length Hair in Layers That Will Inspire Your New Haircut</h3>
-                                <span class="author">Wade Warren</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="single-post.html">
-                                <span class="number">3</span>
-                                <h3>13 Amazing Poems from Shel Silverstein with Valuable Life Lessons</h3>
-                                <span class="author">Esther Howard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="single-post.html">
-                                <span class="number">4</span>
-                                <h3>9 Half-up/half-down Hairstyles for Long and Medium Hair</h3>
-                                <span class="author">Cameron Williamson</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="single-post.html">
-                                <span class="number">5</span>
-                                <h3>Life Insurance And Pregnancy: A Working Mom’s Guide</h3>
-                                <span class="author">Jenny Wilson</span>
-                            </a>
-                        </li>
+                        {% endfor %}
+{#                        <li>#}
+{#                            <a href="single-post.html">#}
+{#                                <span class="number">2</span>#}
+{#                                <h3>17 Pictures of Medium Length Hair in Layers That Will Inspire Your New Haircut</h3>#}
+{#                                <span class="author">Wade Warren</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="single-post.html">#}
+{#                                <span class="number">3</span>#}
+{#                                <h3>13 Amazing Poems from Shel Silverstein with Valuable Life Lessons</h3>#}
+{#                                <span class="author">Esther Howard</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="single-post.html">#}
+{#                                <span class="number">4</span>#}
+{#                                <h3>9 Half-up/half-down Hairstyles for Long and Medium Hair</h3>#}
+{#                                <span class="author">Cameron Williamson</span>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="single-post.html">#}
+{#                                <span class="number">5</span>#}
+{#                                <h3>Life Insurance And Pregnancy: A Working Mom’s Guide</h3>#}
+{#                                <span class="author">Jenny Wilson</span>#}
+{#                            </a>#}
+{#                        </li>#}
                     </ul>
                 </div>
 

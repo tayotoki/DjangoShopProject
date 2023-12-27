@@ -1,14 +1,10 @@
-from django.db.models import F
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from uuid import UUID
 
 from .models import Post
-from .mixins import PublishedPostsMixin, update_post_views
-from .forms import CreateUpdatePostForm
+from .mixins import PublishedPostsMixin, PostCreateUpdateMixin, PostBySlugAndUuidMixin
+from .service.infrastructure.posts_service import PostsService
 
 
-# Create your views here.
 class MainPageView(PublishedPostsMixin, ListView):
     model = Post
     template_name = "blog/index.html"
@@ -21,31 +17,23 @@ class MainPageView(PublishedPostsMixin, ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetail(PostBySlugAndUuidMixin, DetailView):
     model = Post
     template_name = "blog/single-post.html"
 
-    @update_post_views
+    @PostsService.update_fields(fields=["views_count"])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
-        uuid = self.kwargs.get("uuid")
-        slug = self.kwargs.get("slug")
-
-        queryset = self.get_queryset().filter(uuid_field=uuid, slug=slug)
+        queryset = self.get_object_by_slug_and_uuid()
 
         return super().get_object(queryset=queryset)
 
 
-class PostCreateUpdateBase:
-    model = Post
-    form_class = CreateUpdatePostForm
+class PostCreateView(PostCreateUpdateMixin, CreateView, template_name="blog/create-post.html"):
+    pass
 
 
-class PostCreateView(PostCreateUpdateBase, CreateView):
-    template_name = "blog/create-post.html"
-
-
-class PostUpdateView(PostCreateUpdateBase, UpdateView):
-    template_name = "blog/update-post.html"
+class PostUpdateView(PostCreateUpdateMixin, UpdateView, template_name="blog/update-post.html"):
+    pass

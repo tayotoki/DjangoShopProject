@@ -10,18 +10,15 @@ from .generic import FormListView
 
 class MainPage(ListView):
     model = Product
-    template_name = "home.html"
+    template_name = "catalog/home.html"
     context_object_name = "products"
     paginate_by = 8
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by("-modified_at")
+    ordering = "-modified_at"
 
 
 class ShowProduct(DetailView):
     model = Product
-    template_name = "product.html"
+    template_name = "catalog/product.html"
     context_object_name = "product"
 
     def get_object(self, queryset=None):
@@ -30,18 +27,18 @@ class ShowProduct(DetailView):
 
 class CreateProduct(CreateView):
     form_class = ProductCreateForm
-    template_name = "create_product.html"
+    template_name = "catalog/create_product.html"
 
 
 class UpdateProduct(UpdateView):
     model = Product
     form_class = ProductCreateForm
-    template_name = "edit_product.html"
+    template_name = "catalog/edit_product.html"
 
 
 class Contacts(FormListView):
     model = Contact
-    template_name = "contacts.html"
+    template_name = "catalog/contacts.html"
     form_class = FeedbackForm
     success_url = "."
 

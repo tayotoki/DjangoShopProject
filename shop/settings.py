@@ -14,6 +14,8 @@ from pathlib import Path
 
 from envparse import env
 
+from email_service import settings as email_service_settings
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENV_PATH = BASE_DIR.joinpath(".env")
@@ -38,9 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'django_extensions',
     'catalog.apps.CatalogConfig',
+    'blog.apps.BlogConfig',
+    'email_service.apps.EmailServiceConfig',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +134,7 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [
     ("catalog", BASE_DIR / "catalog" / "static"),
+    ("blog", BASE_DIR / "blog" / "static"),
 ]
 
 MEDIA_URL = "/media/"
@@ -138,3 +144,15 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# EMAIL SETTINGS
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("APP_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+RECEIVERS_EMAILS = email_service_settings.RECEIVERS_EMAILS
+
+SITE_ID = 1

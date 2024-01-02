@@ -13,7 +13,7 @@ class Post(models.Model):
     slug = models.CharField(max_length=100, null=False)
     content = models.TextField(verbose_name="Содержимое")
     preview = models.ImageField(upload_to="previews", verbose_name="Превью")
-    created_at = models.DateField(auto_now=True, verbose_name="Дата создания")
+    created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     is_published = models.BooleanField(verbose_name="Опубликовано", default=False)
     views_count = models.PositiveIntegerField(verbose_name="Количество просмотров", default=0)
 

@@ -13,10 +13,7 @@ class MainPage(ListView):
     template_name = "catalog/home.html"
     context_object_name = "products"
     paginate_by = 8
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by("-modified_at")
+    ordering = "-modified_at"
 
 
 class ShowProduct(DetailView):

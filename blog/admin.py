@@ -7,5 +7,5 @@ from .models import Post
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["title", "is_published"]
+    list_display = ["title", "is_published", "created_at"]
     list_editable = ["is_published"]

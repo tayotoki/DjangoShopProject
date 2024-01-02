@@ -15,7 +15,7 @@
 
                                 {% for post in best_five_posts %}
                                     <div class="swiper-slide">
-                                        <a href="single-post.html" class="img-bg d-flex align-items-end"
+                                        <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}" class="img-bg d-flex align-items-end"
                                            style="background-image: url({% mediapath post.preview %});">
                                             <div class="img-bg-inner">
                                                 <h2>{{ post.title }}</h2>
@@ -62,7 +62,7 @@
                                 <p class="mb-4 d-block">{{ post.content|slice:":150" }}</p>
                                 <p class="blockquote" style="font-size: smaller;"><img src="{% static 'assets/svg/eye.svg' %}" alt="">  {{ post.views_count }}</p>
                                 <div class="d-flex align-items-center author">
-                                    <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid">
+                                    <div class="photo"><img src="" alt="" class="img-fluid">
                                     </div>
                                     <div class="name">
                                         <h3 class="m-0 p-0">Имя автора</h3>
@@ -74,8 +74,6 @@
 
                     {% endfor %}
                   </div>
-
-
 
 
                     {#          <div class="col-lg-8">#}
@@ -127,7 +125,7 @@
                     <ul class="trending-post">
                         {% for post in best_five_posts %}
                         <li>
-                            <a href="single-post.html">
+                            <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}">
                                 <span class="number">{{ forloop.counter }}</span>
                                 <h3>{{ post.title }}</h3>
                                 <span class="author">Автор поста</span>
@@ -166,9 +164,11 @@
                 </div>
 
             </div> <!-- End Trending Section -->
+
         </div>
         </div>
         </div>
+            {% include 'blog/paginator.html' %}
 
         {#        </div> <!-- End .row -->#}
         {#      </div>#}

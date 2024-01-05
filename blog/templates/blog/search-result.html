@@ -3,48 +3,46 @@
 
 {% block content %}
 
-  <main id="main">
-    <!-- ======= Search Results ======= -->
-    <section id="search-result" class="search-result">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h3 class="category-title">Результаты поиска</h3>
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="category-title">Результаты поиска</h3>
 
-            {% for post in object_list %}
-                <div class="d-md-flex post-entry-2 small-img">
-                  <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}" class="me-4 thumbnail">
-                    <img src="{% mediapath post.preview %}" alt="" class="img-fluid">
-                  </a>
-                  <div>
-                    <div class="post-meta"><span class="date">Категория</span> <span class="mx-1">&bullet;</span> <span>{{ post.created_at }}</span></div>
-                    <h3><a href="single-post.html">{{ post.title }}</a></h3>
-                    <p>{{ post.content|slice:":200" }}</p>
-                    <div class="d-flex align-items-center author">
-    {#                  <div class="photo"><img src="assets/img/person-2.jpg" alt="" class="img-fluid"></div>#}
-                      <div class="name">
-                        <h3 class="m-0 p-0">Автор</h3>
-                      </div>
-                    </div>
-                  </div>
+                        {% for post in object_list %}
+                            <div class="d-md-flex post-entry-2 small-img">
+                                <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}" class="me-4 thumbnail">
+                                    <img src="{% mediapath post.preview %}" alt="" class="img-fluid">
+                                </a>
+                                <div>
+                                    <div class="post-meta"><span class="date">Категория</span> <span class="mx-1">&bullet;</span>
+                                        <span>{{ post.created_at }}</span></div>
+                                    <h3><a href="{% url 'blog:post-detail' post.slug post.uuid_field %}">{{ post.title }}</a></h3>
+                                    <p>{{ post.content|slice:":200" }}</p>
+                                    <div class="d-flex align-items-center author">
+                                        {#                  <div class="photo"><img src="assets/img/person-2.jpg" alt="" class="img-fluid"></div>#}
+                                        <div class="name">
+                                            <h3 class="m-0 p-0">Автор</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>Нет результатов</p>
+                        {% endfor %}
+
+                        <!-- Paging -->
+                        {% include 'blog/paginator.html' %}
+
+                    </div><!-- End Paging -->
+
+
                 </div>
-            {% empty %}
-                <p>Нет результатов</p>
-            {% endfor %}
+            </div>
+            </div>
+        </section> <!-- End Search Result -->
 
-            <!-- Paging -->
-            {% include 'blog/paginator.html' %}
-
-            </div><!-- End Paging -->
-
-
-
-
-
-        </div>
-        </div>
-      </div>
-    </section> <!-- End Search Result -->
-
-  </main><!-- End #main -->
+    </main><!-- End #main -->
 {% endblock %}

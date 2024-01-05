@@ -25,6 +25,12 @@
               <p><span class="firstcharacter">{{ object.content.0 }}</span>{{ object.content|slice:"1:" }}</p>
             </div><!-- End Single Post Content -->
           </div>
+            <h4 class="mb-5 mt-5">
+                  <a class="border border-dark p-1"
+                     href="{% url 'blog:post-update' object.slug object.uuid_field %}">
+                      Изменить пост
+                  </a>
+              </h4>
         </div>
       </div>
     </section>

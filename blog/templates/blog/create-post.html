@@ -1,35 +1,36 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-<main id="main">
-    <form enctype="multipart/form-data" method="post" class="form-control-sm"">
-    {% csrf_token %}
-    {#    <div class="row justify-content-center mt-5">#}
+    <main id="main">
+        <form enctype="multipart/form-data" method="post" class="form-control-sm">
+        {% csrf_token %}
+        {#    <div class="row justify-content-center mt-5">#}
 
-          <div class="col-lg-8 mt-5">
+        <div class="col-lg-8 mt-5">
             <h5 class="comment-title">{% block page_action %}Добавить пост{% endblock %}</h5>
             <div class="row">
-              <div class="col-lg-6 mb-3">
+                <div class="col-lg-6 mb-3">
 
-                <label for="post-title">Заголовок</label>
-                  {{ form.title }}
-              </div>
+                    <label for="post-title">Заголовок</label>
+                    {{ form.title }}
+                </div>
 
-              <div class="col-8 mb-3">
+                <div class="col-8 mb-3">
 
-                <label for="post-content">Контент</label>
-                  {{ form.content }}
-    {#            <textarea class="form-control" id="comment-message" placeholder="Enter your name" cols="30" rows="10"></textarea>#}
-              </div>
-              <div class="col-12 mb-3">
-                  {{ form.preview }}
-              </div>
-              <div class="col-12 mb-5">
-                  <button type="submit" class="btn btn-primary">{% block form_button_name %}Добавить пост{% endblock %}</button>
-              </div>
+                    <label for="post-content">Контент</label>
+                    {{ form.content }}
+                    {#            <textarea class="form-control" id="comment-message" placeholder="Enter your name" cols="30" rows="10"></textarea>#}
+                </div>
+                <div class="col-12 mb-3">
+                    {{ form.preview }}
+                </div>
+                <div class="col-12 mb-5">
+                    <button type="submit" class="btn btn-primary">{% block form_button_name %}Добавить
+                        пост{% endblock %}</button>
+                </div>
             </div>
-          </div>
-    {#    </div>#}
-    </form>
-</main>
+        </div>
+        {#    </div>#}
+        </form>
+    </main>
 {% endblock %}

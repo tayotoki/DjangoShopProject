@@ -1,55 +1,77 @@
 {% extends 'catalog/base.html' %}
 
 {% block title_on_page %}
-<p class="lead px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">Добавить новый товар</p>
+    <p class="lead px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">Добавить новый товар</p>
 {% endblock %}
 
 {% block content %}
     <form enctype="multipart/form-data" method="post"
-          {% block form_action %}
-          action="{% url 'catalog:create_product' %}"
-          {% endblock %}
-          class="mt-4 shadow p-4 col-6 mx-auto">
-    {% csrf_token %}
-        <div class="row mb-3">
-            <label for="inputEmail3" class="p-0 col-sm-3 col-form-label">Название товара</label>
-{#        <div class="col-sm-3" id="inputEmail3">#}
-            {{ form.name }}
-            {% if form.name.errors %}
-               <p class="p-1 mt-1 text-bg-danger bg-opacity-75 text-center">{{ form.name.errors|striptags }}</p>
-            {% endif %}
-{#        </div>#}
-      </div>
-      <div class="row mb-3">
-        <label for="inputText3" class="p-0 col-sm-2 col-form-label">Описание</label>
-{#        <div class="col-sm-3" id="inputText3">#}
-            {{ form.description }}
-            {% if form.description.errors %}
-               <p class="p-1 mt-1 text-bg-danger bg-opacity-75 text-center">{{ form.description.errors|striptags }}</p>
-            {% endif %}
-{#        </div>#}
-      </div>
-      <div class="row mb-3r mt-4">
-        <label for="inputText3" class="col-sm-2 col-form-label">Цена</label>
-        <div class="col-sm-10">
-            {{ form.price }}
-            {% if form.price.errors %}
-               <p class="p-1 mt-1 text-bg-danger bg-opacity-75 text-center">{{ form.price.errors|striptags }}</p>
-            {% endif %}
+            {% block form_action %}
+          action=""
+            {% endblock %}
+          class="mt-4 shadow p-4 mx-auto">
+        {% csrf_token %}
+    <div class="row">
+        <div class="col-6">
+            <div class="row mb-3">
+                <label for="inputEmail3" class="p-0 col-sm-3 col-form-label">Название товара</label>
+                {#        <div class="col-sm-3" id="inputEmail3">#}
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <p class="p-1 mt-1 text-bg-danger bg-opacity-75 text-center">{{ form.name.errors|striptags }}</p>
+                {% endif %}
+                {#        </div>#}
+            </div>
+            <div class="row mb-3">
+                <label for="inputText3" class="p-0 col-sm-2 col-form-label">Описание</label>
+                {#        <div class="col-sm-3" id="inputText3">#}
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <p class="p-1 mt-1 text-bg-danger bg-opacity-75 text-center">{{ form.description.errors|striptags }}</p>
+                {% endif %}
+                {#        </div>#}
+            </div>
+            <div class="row mb-3r mt-4">
+                <label for="inputText3" class="col-sm-2 col-form-label">Цена</label>
+                <div class="col-sm-10">
+                    {{ form.price }}
+                    {% if form.price.errors %}
+                        <p class="p-1 mt-1 text-bg-danger bg-opacity-75 text-center">{{ form.price.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputText3" class="col-sm-2 col-form-label">Категория</label>
+                <div class="col-sm-10">
+                    {{ form.category }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputText3" class="col-sm-2 col-form-label">Превью</label>
+                <div class="col-sm-10">
+                    {{ form.preview }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-5">{% block action_title %}Добавить{% endblock %}</button>
         </div>
-      </div>
-      <div class="row mb-3">
-        <label for="inputText3" class="col-sm-2 col-form-label">Категория</label>
-        <div class="col-sm-10">
-            {{ form.category }}
+        <div class="col-sm-4 mx-auto">
+
+            {{ formset.management_form }}
+
+            Укажите версию продукта
+
+            {% if formset.non_form_errors %}
+                <p class="p-3 mt-3 text-bg-danger bg-opacity-75 text-center">{{ formset.non_form_errors|striptags }}</p>
+            {% endif %}
+            {% for form in formset.forms %}
+                <div class="p-2 mt-2 border border-primary-subtle" style="--bs-border-opacity: .3">
+                    {{ form }}
+                    {% if form.non_fields_errors %}
+                        <p class="p-3 mt-3 text-bg-danger bg-opacity-75 text-center">{{ form.non_fields_errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
-      </div>
-      <div class="row mb-3">
-        <label for="inputText3" class="col-sm-2 col-form-label">Превью</label>
-        <div class="col-sm-10">
-            {{ form.preview }}
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary mt-5">{% block action_title %}Добавить{% endblock %}</button>
+    </div>
     </form>
 {% endblock %}

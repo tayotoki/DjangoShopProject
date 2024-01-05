@@ -1,3 +1,5 @@
+from django.db.models import Q, Value, F
+from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.translation import gettext as _
@@ -6,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Product, Contact
 from .forms import ProductCreateForm, FeedbackForm
 from .generic import FormListView
+from .mixins import AddVersionsFormsetMixin
 
 
 class MainPage(ListView):
@@ -21,16 +24,13 @@ class ShowProduct(DetailView):
     template_name = "catalog/product.html"
     context_object_name = "product"
 
-    def get_object(self, queryset=None):
-        return get_object_or_404(self.model, pk=self.kwargs[self.pk_url_kwarg])
 
-
-class CreateProduct(CreateView):
+class CreateProduct(AddVersionsFormsetMixin, CreateView):
     form_class = ProductCreateForm
     template_name = "catalog/create_product.html"
 
 
-class UpdateProduct(UpdateView):
+class UpdateProduct(AddVersionsFormsetMixin, UpdateView):
     model = Product
     form_class = ProductCreateForm
     template_name = "catalog/edit_product.html"

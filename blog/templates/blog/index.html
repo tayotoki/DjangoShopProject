@@ -15,7 +15,8 @@
 
                                 {% for post in best_five_posts %}
                                     <div class="swiper-slide">
-                                        <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}" class="img-bg d-flex align-items-end"
+                                        <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}"
+                                           class="img-bg d-flex align-items-end"
                                            style="background-image: url({% mediapath post.preview %});">
                                             <div class="img-bg-inner">
                                                 <h2>{{ post.title }}</h2>
@@ -44,36 +45,41 @@
         <div id="posts" class="posts">
             <div class="container" data-aos="fade-up">
                 <div class="row g-5">
-                  <div class="col-8">
+                    <div class="col-8">
 
-                    {% for post in object_list %}
+                        {% for post in object_list %}
 
-                        <div class="col-8">
+                            <div class="col-8">
 
-                            <div class="post-entry-1 lg">
+                                <div class="post-entry-1 lg">
 
-                                <div class="post-meta"><span class="date">Название категории</span> <span class="mx-1">&bullet;</span>
-                                    <span>{{ post.created_at }}</span></div>
-                                <h2><a href="{% url 'blog:post-detail' slug=post.slug uuid=post.uuid_field %}">{{ post.title }}</a></h2>
-                                <div class="col-2">
-                                    <a href="{% url 'blog:post-detail' slug=post.slug uuid=post.uuid_field %}"><img src="{% mediapath post.preview %}" height="200" width="200"
-                                                                    alt="" class="img-fluid"></a>
-                                </div>
-                                <p class="mb-4 d-block">{{ post.content|slice:":150" }}</p>
-                                <p class="blockquote" style="font-size: smaller;"><img src="{% static 'assets/svg/eye.svg' %}" alt="">  {{ post.views_count }}</p>
-                                <div class="d-flex align-items-center author">
-                                    <div class="photo"><img src="" alt="" class="img-fluid">
+                                    <div class="post-meta"><span class="date">Название категории</span> <span
+                                            class="mx-1">&bullet;</span>
+                                        <span>{{ post.created_at }}</span></div>
+                                    <h2>
+                                        <a href="{% url 'blog:post-detail' slug=post.slug uuid=post.uuid_field %}">{{ post.title }}</a>
+                                    </h2>
+                                    <div class="col-2">
+                                        <a href="{% url 'blog:post-detail' slug=post.slug uuid=post.uuid_field %}"><img
+                                                src="{% mediapath post.preview %}" height="200" width="200"
+                                                alt="" class="img-fluid"></a>
                                     </div>
-                                    <div class="name">
-                                        <h3 class="m-0 p-0">Имя автора</h3>
+                                    <p class="mb-4 d-block">{{ post.content|slice:":150" }}</p>
+                                    <p class="blockquote" style="font-size: smaller;"><img
+                                            src="{% static 'assets/svg/eye.svg' %}" alt=""> {{ post.views_count }}</p>
+                                    <div class="d-flex align-items-center author">
+                                        <div class="photo"><img src="" alt="" class="img-fluid">
+                                        </div>
+                                        <div class="name">
+                                            <h3 class="m-0 p-0">Имя автора</h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                    {% endfor %}
-                  </div>
+                        {% endfor %}
+                    </div>
 
 
                     {#          <div class="col-lg-8">#}
@@ -116,59 +122,58 @@
                     {#              </div>#}
 
 
+                    <!-- Trending Section -->
+                    <div class="col-4">
 
-            <!-- Trending Section -->
-            <div class="col-4">
+                        <div class="trending mb-4">
+                            <h3>Тренды</h3>
+                            <ul class="trending-post">
+                                {% for post in best_five_posts %}
+                                    <li>
+                                        <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}">
+                                            <span class="number">{{ forloop.counter }}</span>
+                                            <h3>{{ post.title }}</h3>
+                                            <span class="author">Автор поста</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {#                        <li>#}
+                                {#                            <a href="single-post.html">#}
+                                {#                                <span class="number">2</span>#}
+                                {#                                <h3>17 Pictures of Medium Length Hair in Layers That Will Inspire Your New Haircut</h3>#}
+                                {#                                <span class="author">Wade Warren</span>#}
+                                {#                            </a>#}
+                                {#                        </li>#}
+                                {#                        <li>#}
+                                {#                            <a href="single-post.html">#}
+                                {#                                <span class="number">3</span>#}
+                                {#                                <h3>13 Amazing Poems from Shel Silverstein with Valuable Life Lessons</h3>#}
+                                {#                                <span class="author">Esther Howard</span>#}
+                                {#                            </a>#}
+                                {#                        </li>#}
+                                {#                        <li>#}
+                                {#                            <a href="single-post.html">#}
+                                {#                                <span class="number">4</span>#}
+                                {#                                <h3>9 Half-up/half-down Hairstyles for Long and Medium Hair</h3>#}
+                                {#                                <span class="author">Cameron Williamson</span>#}
+                                {#                            </a>#}
+                                {#                        </li>#}
+                                {#                        <li>#}
+                                {#                            <a href="single-post.html">#}
+                                {#                                <span class="number">5</span>#}
+                                {#                                <h3>Life Insurance And Pregnancy: A Working Mom’s Guide</h3>#}
+                                {#                                <span class="author">Jenny Wilson</span>#}
+                                {#                            </a>#}
+                                {#                        </li>#}
+                            </ul>
+                        </div>
 
-                <div class="trending mb-4">
-                    <h3>Тренды</h3>
-                    <ul class="trending-post">
-                        {% for post in best_five_posts %}
-                        <li>
-                            <a href="{% url 'blog:post-detail' post.slug post.uuid_field %}">
-                                <span class="number">{{ forloop.counter }}</span>
-                                <h3>{{ post.title }}</h3>
-                                <span class="author">Автор поста</span>
-                            </a>
-                        </li>
-                        {% endfor %}
-{#                        <li>#}
-{#                            <a href="single-post.html">#}
-{#                                <span class="number">2</span>#}
-{#                                <h3>17 Pictures of Medium Length Hair in Layers That Will Inspire Your New Haircut</h3>#}
-{#                                <span class="author">Wade Warren</span>#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="single-post.html">#}
-{#                                <span class="number">3</span>#}
-{#                                <h3>13 Amazing Poems from Shel Silverstein with Valuable Life Lessons</h3>#}
-{#                                <span class="author">Esther Howard</span>#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="single-post.html">#}
-{#                                <span class="number">4</span>#}
-{#                                <h3>9 Half-up/half-down Hairstyles for Long and Medium Hair</h3>#}
-{#                                <span class="author">Cameron Williamson</span>#}
-{#                            </a>#}
-{#                        </li>#}
-{#                        <li>#}
-{#                            <a href="single-post.html">#}
-{#                                <span class="number">5</span>#}
-{#                                <h3>Life Insurance And Pregnancy: A Working Mom’s Guide</h3>#}
-{#                                <span class="author">Jenny Wilson</span>#}
-{#                            </a>#}
-{#                        </li>#}
-                    </ul>
+                    </div> <!-- End Trending Section -->
+
                 </div>
-
-            </div> <!-- End Trending Section -->
-
+            </div>
         </div>
-        </div>
-        </div>
-            {% include 'blog/paginator.html' %}
+        {% include 'blog/paginator.html' %}
 
         {#        </div> <!-- End .row -->#}
         {#      </div>#}

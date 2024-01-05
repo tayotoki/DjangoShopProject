@@ -8,14 +8,15 @@ from django.core.exceptions import ValidationError
 from django.forms.widgets import Textarea, TextInput
 from django.utils.translation import gettext_lazy as _
 
-from .models import Product
+from .models import Product, Version
 
 
+# TODO: вынести декоратор и общие валидаторы в отдельный модуль или пакет.
 def common_text_validation(method: Callable[..., Any]):
     """Decorator for common text fields validations."""
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        if (name := method.__name__).startswith("clean"):
+        if (name := method.__name__).startswith("clean_"):
 
             field_name = name.split("_", 1)[-1]  # clean_{field} | clean_{some_field} -> field | some_field
 
@@ -78,6 +79,34 @@ class ProductCreateForm(forms.ModelForm):
                     "style": "height: 200px",
                 }
             ),
+            "name": TextInput(
+                attrs={
+                    "class": "form-control"
+                }
+            )
+        }
+
+
+class VersionFormset(forms.models.BaseInlineFormSet):
+    def clean(self):
+        if any(self.errors):
+            return
+
+        counter = 0
+
+        for form in self.forms:
+            if form.cleaned_data.get("is_active"):
+                counter += 1
+            if counter > 1:
+                raise forms.ValidationError("У продукта может быть только одна активная версия")
+
+
+class VersionInlineForm(forms.ModelForm):
+    class Meta:
+        model = Version
+        exclude = ("product", )
+
+        widgets = {
             "name": TextInput(
                 attrs={
                     "class": "form-control"

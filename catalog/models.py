@@ -2,6 +2,7 @@ import decimal
 
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import UniqueConstraint, Q
 from django.urls import reverse
 
 
@@ -62,3 +63,30 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Version(models.Model):
+    number = models.DecimalField(verbose_name="версия",
+                                 max_digits=10,
+                                 decimal_places=2,
+                                 validators=[MinValueValidator(decimal.Decimal("0.00"))])
+    name = models.CharField(max_length=150, verbose_name="название")
+    is_active = models.BooleanField(verbose_name="активная", default=False)
+
+    product = models.ForeignKey(Product, related_name="versions", verbose_name="продукт", on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=["product"],
+                condition=Q(is_active=True),
+                name="one_active_version_for_product",
+                violation_error_message="У продукта может быть только одна активная версия"
+            )
+        ]
+
+        verbose_name = "версия"
+        verbose_name_plural = "версии"
+
+    def __str__(self):
+        return f"{self.name} v{self.number}"

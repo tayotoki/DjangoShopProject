@@ -1,4 +1,4 @@
-from django.db.models import Q, Value, F
+from django.db.models import Q, Value, F, Prefetch
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -17,6 +17,10 @@ class MainPage(ListView):
     context_object_name = "products"
     paginate_by = 8
     ordering = "-modified_at"
+
+    def get_queryset(self):
+        queryset = self.model.objects.order_by("-created_at").prefetch_related("versions")
+        return queryset
 
 
 class ShowProduct(DetailView):

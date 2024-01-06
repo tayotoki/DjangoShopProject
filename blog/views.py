@@ -17,7 +17,7 @@ class SearchPageView(PublishedPostsMixin, ListView):
             search_result = self.model.posts.get_search_results(search_term=query)
             result = search_result
         else:
-            result = None
+            result = []
 
         return result
 
